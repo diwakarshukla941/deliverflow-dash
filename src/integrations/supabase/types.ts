@@ -14,16 +14,286 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      attendance: {
+        Row: {
+          ai_confidence: number | null
+          attendance_date: string
+          check_in_at: string | null
+          check_in_image_url: string | null
+          check_in_lat: number | null
+          check_in_lng: number | null
+          check_out_at: string | null
+          check_out_image_url: string | null
+          check_out_lat: number | null
+          check_out_lng: number | null
+          created_at: string
+          device_id: string | null
+          device_info: Json | null
+          face_recognition_id: string | null
+          face_verification_status: string | null
+          id: string
+          partner_id: string
+          remarks: string | null
+          status: Database["public"]["Enums"]["attendance_status"]
+          updated_at: string
+        }
+        Insert: {
+          ai_confidence?: number | null
+          attendance_date?: string
+          check_in_at?: string | null
+          check_in_image_url?: string | null
+          check_in_lat?: number | null
+          check_in_lng?: number | null
+          check_out_at?: string | null
+          check_out_image_url?: string | null
+          check_out_lat?: number | null
+          check_out_lng?: number | null
+          created_at?: string
+          device_id?: string | null
+          device_info?: Json | null
+          face_recognition_id?: string | null
+          face_verification_status?: string | null
+          id?: string
+          partner_id: string
+          remarks?: string | null
+          status?: Database["public"]["Enums"]["attendance_status"]
+          updated_at?: string
+        }
+        Update: {
+          ai_confidence?: number | null
+          attendance_date?: string
+          check_in_at?: string | null
+          check_in_image_url?: string | null
+          check_in_lat?: number | null
+          check_in_lng?: number | null
+          check_out_at?: string | null
+          check_out_image_url?: string | null
+          check_out_lat?: number | null
+          check_out_lng?: number | null
+          created_at?: string
+          device_id?: string | null
+          device_info?: Json | null
+          face_recognition_id?: string | null
+          face_verification_status?: string | null
+          id?: string
+          partner_id?: string
+          remarks?: string | null
+          status?: Database["public"]["Enums"]["attendance_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "attendance_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "delivery_partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      delivery_partners: {
+        Row: {
+          address_line1: string | null
+          address_line2: string | null
+          app_version: string | null
+          bank_account_holder: string | null
+          bank_account_number: string | null
+          bank_ifsc: string | null
+          bank_name: string | null
+          city: string | null
+          country: string | null
+          created_at: string
+          created_by: string | null
+          date_of_birth: string | null
+          device_id: string | null
+          driving_license_expiry: string | null
+          driving_license_number: string | null
+          email: string | null
+          emergency_contact_name: string | null
+          emergency_contact_phone: string | null
+          emergency_contact_relation: string | null
+          employment_type: string | null
+          full_name: string
+          gender: string | null
+          government_id_number: string | null
+          government_id_type: string | null
+          id: string
+          joining_date: string | null
+          last_login_at: string | null
+          last_seen_at: string | null
+          notes: string | null
+          os_version: string | null
+          partner_code: string
+          phone: string
+          postal_code: string | null
+          profile_photo_url: string | null
+          push_token: string | null
+          qr_code: string | null
+          state: string | null
+          status: Database["public"]["Enums"]["partner_status"]
+          updated_at: string
+          upi_id: string | null
+          user_id: string | null
+          vehicle_model: string | null
+          vehicle_number: string | null
+          vehicle_type: string | null
+        }
+        Insert: {
+          address_line1?: string | null
+          address_line2?: string | null
+          app_version?: string | null
+          bank_account_holder?: string | null
+          bank_account_number?: string | null
+          bank_ifsc?: string | null
+          bank_name?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          created_by?: string | null
+          date_of_birth?: string | null
+          device_id?: string | null
+          driving_license_expiry?: string | null
+          driving_license_number?: string | null
+          email?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
+          emergency_contact_relation?: string | null
+          employment_type?: string | null
+          full_name: string
+          gender?: string | null
+          government_id_number?: string | null
+          government_id_type?: string | null
+          id?: string
+          joining_date?: string | null
+          last_login_at?: string | null
+          last_seen_at?: string | null
+          notes?: string | null
+          os_version?: string | null
+          partner_code: string
+          phone: string
+          postal_code?: string | null
+          profile_photo_url?: string | null
+          push_token?: string | null
+          qr_code?: string | null
+          state?: string | null
+          status?: Database["public"]["Enums"]["partner_status"]
+          updated_at?: string
+          upi_id?: string | null
+          user_id?: string | null
+          vehicle_model?: string | null
+          vehicle_number?: string | null
+          vehicle_type?: string | null
+        }
+        Update: {
+          address_line1?: string | null
+          address_line2?: string | null
+          app_version?: string | null
+          bank_account_holder?: string | null
+          bank_account_number?: string | null
+          bank_ifsc?: string | null
+          bank_name?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          created_by?: string | null
+          date_of_birth?: string | null
+          device_id?: string | null
+          driving_license_expiry?: string | null
+          driving_license_number?: string | null
+          email?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
+          emergency_contact_relation?: string | null
+          employment_type?: string | null
+          full_name?: string
+          gender?: string | null
+          government_id_number?: string | null
+          government_id_type?: string | null
+          id?: string
+          joining_date?: string | null
+          last_login_at?: string | null
+          last_seen_at?: string | null
+          notes?: string | null
+          os_version?: string | null
+          partner_code?: string
+          phone?: string
+          postal_code?: string | null
+          profile_photo_url?: string | null
+          push_token?: string | null
+          qr_code?: string | null
+          state?: string | null
+          status?: Database["public"]["Enums"]["partner_status"]
+          updated_at?: string
+          upi_id?: string | null
+          user_id?: string | null
+          vehicle_model?: string | null
+          vehicle_number?: string | null
+          vehicle_type?: string | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_staff: { Args: { _user_id: string }; Returns: boolean }
     }
     Enums: {
-      [_ in never]: never
+      app_role:
+        | "super_admin"
+        | "admin"
+        | "hr"
+        | "operations"
+        | "finance"
+        | "manager"
+        | "dispatcher"
+        | "team_leader"
+      attendance_status: "checked_in" | "checked_out" | "absent" | "on_leave"
+      delivery_status:
+        | "pending"
+        | "assigned"
+        | "picked_up"
+        | "in_transit"
+        | "delivered"
+        | "cancelled"
+        | "failed"
+      partner_status:
+        | "active"
+        | "suspended"
+        | "deactivated"
+        | "blacklisted"
+        | "resigned"
+        | "pending"
+      payment_mode: "cash" | "upi" | "card" | "wallet" | "online" | "other"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +420,36 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: [
+        "super_admin",
+        "admin",
+        "hr",
+        "operations",
+        "finance",
+        "manager",
+        "dispatcher",
+        "team_leader",
+      ],
+      attendance_status: ["checked_in", "checked_out", "absent", "on_leave"],
+      delivery_status: [
+        "pending",
+        "assigned",
+        "picked_up",
+        "in_transit",
+        "delivered",
+        "cancelled",
+        "failed",
+      ],
+      partner_status: [
+        "active",
+        "suspended",
+        "deactivated",
+        "blacklisted",
+        "resigned",
+        "pending",
+      ],
+      payment_mode: ["cash", "upi", "card", "wallet", "online", "other"],
+    },
   },
 } as const
