@@ -10,33 +10,129 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiV1MeRouteImport } from './routes/api/v1/me'
+import { Route as ApiV1DeliveryPartnersIndexRouteImport } from './routes/api/v1/delivery-partners/index'
+import { Route as ApiV1AttendanceIndexRouteImport } from './routes/api/v1/attendance/index'
+import { Route as ApiV1DeliveryPartnersIdRouteImport } from './routes/api/v1/delivery-partners/$id'
+import { Route as ApiV1AttendanceTodayRouteImport } from './routes/api/v1/attendance/today'
+import { Route as ApiV1AttendanceCheckOutRouteImport } from './routes/api/v1/attendance/check-out'
+import { Route as ApiV1AttendanceCheckInRouteImport } from './routes/api/v1/attendance/check-in'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiV1MeRoute = ApiV1MeRouteImport.update({
+  id: '/api/v1/me',
+  path: '/api/v1/me',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiV1DeliveryPartnersIndexRoute =
+  ApiV1DeliveryPartnersIndexRouteImport.update({
+    id: '/api/v1/delivery-partners/',
+    path: '/api/v1/delivery-partners/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiV1AttendanceIndexRoute = ApiV1AttendanceIndexRouteImport.update({
+  id: '/api/v1/attendance/',
+  path: '/api/v1/attendance/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiV1DeliveryPartnersIdRoute = ApiV1DeliveryPartnersIdRouteImport.update({
+  id: '/api/v1/delivery-partners/$id',
+  path: '/api/v1/delivery-partners/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiV1AttendanceTodayRoute = ApiV1AttendanceTodayRouteImport.update({
+  id: '/api/v1/attendance/today',
+  path: '/api/v1/attendance/today',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiV1AttendanceCheckOutRoute = ApiV1AttendanceCheckOutRouteImport.update({
+  id: '/api/v1/attendance/check-out',
+  path: '/api/v1/attendance/check-out',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiV1AttendanceCheckInRoute = ApiV1AttendanceCheckInRouteImport.update({
+  id: '/api/v1/attendance/check-in',
+  path: '/api/v1/attendance/check-in',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/api/v1/me': typeof ApiV1MeRoute
+  '/api/v1/attendance/check-in': typeof ApiV1AttendanceCheckInRoute
+  '/api/v1/attendance/check-out': typeof ApiV1AttendanceCheckOutRoute
+  '/api/v1/attendance/today': typeof ApiV1AttendanceTodayRoute
+  '/api/v1/delivery-partners/$id': typeof ApiV1DeliveryPartnersIdRoute
+  '/api/v1/attendance/': typeof ApiV1AttendanceIndexRoute
+  '/api/v1/delivery-partners/': typeof ApiV1DeliveryPartnersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/api/v1/me': typeof ApiV1MeRoute
+  '/api/v1/attendance/check-in': typeof ApiV1AttendanceCheckInRoute
+  '/api/v1/attendance/check-out': typeof ApiV1AttendanceCheckOutRoute
+  '/api/v1/attendance/today': typeof ApiV1AttendanceTodayRoute
+  '/api/v1/delivery-partners/$id': typeof ApiV1DeliveryPartnersIdRoute
+  '/api/v1/attendance': typeof ApiV1AttendanceIndexRoute
+  '/api/v1/delivery-partners': typeof ApiV1DeliveryPartnersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/api/v1/me': typeof ApiV1MeRoute
+  '/api/v1/attendance/check-in': typeof ApiV1AttendanceCheckInRoute
+  '/api/v1/attendance/check-out': typeof ApiV1AttendanceCheckOutRoute
+  '/api/v1/attendance/today': typeof ApiV1AttendanceTodayRoute
+  '/api/v1/delivery-partners/$id': typeof ApiV1DeliveryPartnersIdRoute
+  '/api/v1/attendance/': typeof ApiV1AttendanceIndexRoute
+  '/api/v1/delivery-partners/': typeof ApiV1DeliveryPartnersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/api/v1/me'
+    | '/api/v1/attendance/check-in'
+    | '/api/v1/attendance/check-out'
+    | '/api/v1/attendance/today'
+    | '/api/v1/delivery-partners/$id'
+    | '/api/v1/attendance/'
+    | '/api/v1/delivery-partners/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/api/v1/me'
+    | '/api/v1/attendance/check-in'
+    | '/api/v1/attendance/check-out'
+    | '/api/v1/attendance/today'
+    | '/api/v1/delivery-partners/$id'
+    | '/api/v1/attendance'
+    | '/api/v1/delivery-partners'
+  id:
+    | '__root__'
+    | '/'
+    | '/api/v1/me'
+    | '/api/v1/attendance/check-in'
+    | '/api/v1/attendance/check-out'
+    | '/api/v1/attendance/today'
+    | '/api/v1/delivery-partners/$id'
+    | '/api/v1/attendance/'
+    | '/api/v1/delivery-partners/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApiV1MeRoute: typeof ApiV1MeRoute
+  ApiV1AttendanceCheckInRoute: typeof ApiV1AttendanceCheckInRoute
+  ApiV1AttendanceCheckOutRoute: typeof ApiV1AttendanceCheckOutRoute
+  ApiV1AttendanceTodayRoute: typeof ApiV1AttendanceTodayRoute
+  ApiV1DeliveryPartnersIdRoute: typeof ApiV1DeliveryPartnersIdRoute
+  ApiV1AttendanceIndexRoute: typeof ApiV1AttendanceIndexRoute
+  ApiV1DeliveryPartnersIndexRoute: typeof ApiV1DeliveryPartnersIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,22 +144,68 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/v1/me': {
+      id: '/api/v1/me'
+      path: '/api/v1/me'
+      fullPath: '/api/v1/me'
+      preLoaderRoute: typeof ApiV1MeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/v1/delivery-partners/': {
+      id: '/api/v1/delivery-partners/'
+      path: '/api/v1/delivery-partners'
+      fullPath: '/api/v1/delivery-partners/'
+      preLoaderRoute: typeof ApiV1DeliveryPartnersIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/v1/attendance/': {
+      id: '/api/v1/attendance/'
+      path: '/api/v1/attendance'
+      fullPath: '/api/v1/attendance/'
+      preLoaderRoute: typeof ApiV1AttendanceIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/v1/delivery-partners/$id': {
+      id: '/api/v1/delivery-partners/$id'
+      path: '/api/v1/delivery-partners/$id'
+      fullPath: '/api/v1/delivery-partners/$id'
+      preLoaderRoute: typeof ApiV1DeliveryPartnersIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/v1/attendance/today': {
+      id: '/api/v1/attendance/today'
+      path: '/api/v1/attendance/today'
+      fullPath: '/api/v1/attendance/today'
+      preLoaderRoute: typeof ApiV1AttendanceTodayRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/v1/attendance/check-out': {
+      id: '/api/v1/attendance/check-out'
+      path: '/api/v1/attendance/check-out'
+      fullPath: '/api/v1/attendance/check-out'
+      preLoaderRoute: typeof ApiV1AttendanceCheckOutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/v1/attendance/check-in': {
+      id: '/api/v1/attendance/check-in'
+      path: '/api/v1/attendance/check-in'
+      fullPath: '/api/v1/attendance/check-in'
+      preLoaderRoute: typeof ApiV1AttendanceCheckInRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApiV1MeRoute: ApiV1MeRoute,
+  ApiV1AttendanceCheckInRoute: ApiV1AttendanceCheckInRoute,
+  ApiV1AttendanceCheckOutRoute: ApiV1AttendanceCheckOutRoute,
+  ApiV1AttendanceTodayRoute: ApiV1AttendanceTodayRoute,
+  ApiV1DeliveryPartnersIdRoute: ApiV1DeliveryPartnersIdRoute,
+  ApiV1AttendanceIndexRoute: ApiV1AttendanceIndexRoute,
+  ApiV1DeliveryPartnersIndexRoute: ApiV1DeliveryPartnersIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
