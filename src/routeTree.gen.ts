@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiV1MeRouteImport } from './routes/api/v1/me'
 import { Route as ApiV1DeliveryPartnersIndexRouteImport } from './routes/api/v1/delivery-partners/index'
@@ -18,6 +19,11 @@ import { Route as ApiV1AttendanceTodayRouteImport } from './routes/api/v1/attend
 import { Route as ApiV1AttendanceCheckOutRouteImport } from './routes/api/v1/attendance/check-out'
 import { Route as ApiV1AttendanceCheckInRouteImport } from './routes/api/v1/attendance/check-in'
 
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -62,6 +68,7 @@ const ApiV1AttendanceCheckInRoute = ApiV1AttendanceCheckInRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/api/v1/me': typeof ApiV1MeRoute
   '/api/v1/attendance/check-in': typeof ApiV1AttendanceCheckInRoute
   '/api/v1/attendance/check-out': typeof ApiV1AttendanceCheckOutRoute
@@ -72,6 +79,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/api/v1/me': typeof ApiV1MeRoute
   '/api/v1/attendance/check-in': typeof ApiV1AttendanceCheckInRoute
   '/api/v1/attendance/check-out': typeof ApiV1AttendanceCheckOutRoute
@@ -83,6 +91,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/api/v1/me': typeof ApiV1MeRoute
   '/api/v1/attendance/check-in': typeof ApiV1AttendanceCheckInRoute
   '/api/v1/attendance/check-out': typeof ApiV1AttendanceCheckOutRoute
@@ -95,6 +104,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/auth'
     | '/api/v1/me'
     | '/api/v1/attendance/check-in'
     | '/api/v1/attendance/check-out'
@@ -105,6 +115,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/auth'
     | '/api/v1/me'
     | '/api/v1/attendance/check-in'
     | '/api/v1/attendance/check-out'
@@ -115,6 +126,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/auth'
     | '/api/v1/me'
     | '/api/v1/attendance/check-in'
     | '/api/v1/attendance/check-out'
@@ -126,6 +138,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRoute
   ApiV1MeRoute: typeof ApiV1MeRoute
   ApiV1AttendanceCheckInRoute: typeof ApiV1AttendanceCheckInRoute
   ApiV1AttendanceCheckOutRoute: typeof ApiV1AttendanceCheckOutRoute
@@ -137,6 +150,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -198,6 +218,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRoute: AuthRoute,
   ApiV1MeRoute: ApiV1MeRoute,
   ApiV1AttendanceCheckInRoute: ApiV1AttendanceCheckInRoute,
   ApiV1AttendanceCheckOutRoute: ApiV1AttendanceCheckOutRoute,
