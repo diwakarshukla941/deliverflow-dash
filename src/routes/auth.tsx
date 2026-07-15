@@ -64,6 +64,7 @@ function AuthPage() {
               <p className="mb-2 font-semibold text-slate-200">Demo credentials</p>
               <p><span className="text-slate-400">Super Admin:</span> admin@tej.com / TejAdmin@2026</p>
               <p><span className="text-slate-400">Manager:</span> manager@tej.com / TejManager@2026</p>
+              <p><span className="text-slate-400">HR:</span> hr@tej.com / TejHR@2026</p>
             </div>
           </CardContent>
         </Card>
