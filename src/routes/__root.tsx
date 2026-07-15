@@ -82,9 +82,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: "Tej Delivery operations dashboard for managing delivery partners, attendance, deliveries and earnings." },
       { name: "author", content: "Tej Delivery" },
       { property: "og:title", content: "Tej Delivery — Operations Dashboard" },
-      { property: "og:description", content: "Central operations dashboard for Tej Delivery." },
+      { property: "og:description", content: "Tej Delivery operations dashboard for managing delivery partners, attendance, deliveries and earnings." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Tej Delivery — Operations Dashboard" },
+      { name: "twitter:description", content: "Tej Delivery operations dashboard for managing delivery partners, attendance, deliveries and earnings." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d47164b7-f1cb-4f46-9125-853ba17d02f9/id-preview-01b395a7--a7b2cc57-9c74-467d-ba7c-bb93b6f02ad7.lovable.app-1784078574534.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d47164b7-f1cb-4f46-9125-853ba17d02f9/id-preview-01b395a7--a7b2cc57-9c74-467d-ba7c-bb93b6f02ad7.lovable.app-1784078574534.png" },
     ],
     links: [
       {
