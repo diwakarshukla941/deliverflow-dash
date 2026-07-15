@@ -3,10 +3,11 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import {
-  LayoutDashboard, Users, ClipboardCheck, Truck, Wallet,
+  LayoutDashboard, Users, ClipboardCheck, Bike, Wallet,
   BarChart3, ScrollText, Settings, LogOut, Menu,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useRoles, canAccess } from "@/hooks/use-roles";
 
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
@@ -19,14 +20,14 @@ export const Route = createFileRoute("/_authenticated")({
 });
 
 const NAV = [
-  { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/partners", label: "Delivery Partners", icon: Users },
-  { to: "/attendance", label: "Attendance", icon: ClipboardCheck },
-  { to: "/deliveries", label: "Deliveries", icon: Truck },
-  { to: "/earnings", label: "Earnings", icon: Wallet },
-  { to: "/reports", label: "Reports", icon: BarChart3 },
-  { to: "/audit-logs", label: "Audit Logs", icon: ScrollText },
-  { to: "/settings", label: "Settings", icon: Settings },
+  { key: "dashboard",  to: "/dashboard",   label: "Dashboard",         icon: LayoutDashboard },
+  { key: "partners",   to: "/partners",    label: "Delivery Partners", icon: Users },
+  { key: "attendance", to: "/attendance",  label: "Attendance",        icon: ClipboardCheck },
+  { key: "deliveries", to: "/deliveries",  label: "Deliveries",        icon: Bike },
+  { key: "earnings",   to: "/earnings",    label: "Earnings",          icon: Wallet },
+  { key: "reports",    to: "/reports",     label: "Reports",           icon: BarChart3 },
+  { key: "audit-logs", to: "/audit-logs",  label: "Audit Logs",        icon: ScrollText },
+  { key: "settings",   to: "/settings",    label: "Settings",          icon: Settings },
 ] as const;
 
 function AuthedLayout() {
@@ -34,6 +35,7 @@ function AuthedLayout() {
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [open, setOpen] = useState(false);
+  const { data: roles = [] } = useRoles();
 
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange((event) => {
@@ -47,6 +49,9 @@ function AuthedLayout() {
     navigate({ to: "/auth" });
   };
 
+  const visibleNav = NAV.filter((n) => canAccess(roles, n.key));
+  const roleLabel = roles[0]?.replace("_", " ") ?? "member";
+
   return (
     <div className="min-h-screen bg-slate-50">
       <aside
@@ -57,15 +62,15 @@ function AuthedLayout() {
       >
         <div className="flex h-16 items-center gap-2 border-b border-white/10 px-5">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-orange-500">
-            <Truck className="h-5 w-5" />
+            <Bike className="h-5 w-5" />
           </div>
           <div>
             <p className="text-sm font-semibold leading-tight">Tej Delivery</p>
-            <p className="text-xs text-slate-400">Operations</p>
+            <p className="text-xs text-slate-400">Food delivery ops</p>
           </div>
         </div>
         <nav className="space-y-1 p-3">
-          {NAV.map(({ to, label, icon: Icon }) => {
+          {visibleNav.map(({ to, label, icon: Icon }) => {
             const active = pathname === to;
             return (
               <Link
@@ -86,7 +91,8 @@ function AuthedLayout() {
           })}
         </nav>
         <div className="absolute bottom-0 left-0 right-0 border-t border-white/10 p-3">
-          <div className="mb-2 px-2 text-xs text-slate-400 truncate">{user.email}</div>
+          <div className="mb-1 px-2 text-xs text-slate-400 truncate">{user.email}</div>
+          <div className="mb-2 px-2 text-[10px] uppercase tracking-wider text-orange-400">{roleLabel}</div>
           <Button
             variant="ghost"
             onClick={signOut}

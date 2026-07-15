@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, ClipboardCheck, Truck, Wallet } from "lucide-react";
+import { Users, ClipboardCheck, Bike, Wallet } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   component: DashboardPage,
@@ -28,7 +28,7 @@ function DashboardPage() {
 
   const cards = [
     { label: "Total Partners", value: stats?.total ?? "—", icon: Users, color: "text-blue-600" },
-    { label: "Active Partners", value: stats?.active ?? "—", icon: Truck, color: "text-emerald-600" },
+    { label: "Active Partners", value: stats?.active ?? "—", icon: Bike, color: "text-emerald-600" },
     { label: "Checked in today", value: stats?.today ?? "—", icon: ClipboardCheck, color: "text-orange-600" },
     { label: "Payouts (mo)", value: "—", icon: Wallet, color: "text-purple-600" },
   ];
