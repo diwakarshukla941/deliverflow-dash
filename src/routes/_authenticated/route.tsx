@@ -35,7 +35,7 @@ function AuthedLayout() {
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [open, setOpen] = useState(false);
-  const { data: roles = [] } = useRoles();
+  const { data: roles = [], isLoading: rolesLoading } = useRoles();
 
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange((event) => {
@@ -50,7 +50,7 @@ function AuthedLayout() {
   };
 
   const visibleNav = NAV.filter((n) => canAccess(roles, n.key));
-  const roleLabel = roles[0]?.replace("_", " ") ?? "member";
+  const roleLabel = rolesLoading ? "loading…" : roles[0]?.replace("_", " ") ?? "no role";
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -70,7 +70,14 @@ function AuthedLayout() {
           </div>
         </div>
         <nav className="space-y-1 p-3">
-          {visibleNav.map(({ to, label, icon: Icon }) => {
+          {rolesLoading &&
+            Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="mx-1 my-1 h-9 animate-pulse rounded-lg bg-white/5" />
+            ))}
+          {!rolesLoading && visibleNav.length === 0 && (
+            <p className="px-3 py-2 text-xs text-slate-400">No modules assigned to your role.</p>
+          )}
+          {!rolesLoading && visibleNav.map(({ to, label, icon: Icon }) => {
             const active = pathname === to;
             return (
               <Link
