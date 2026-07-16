@@ -1,13 +1,14 @@
 import { createFileRoute, Outlet, redirect, Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import {
   LayoutDashboard, Users, ClipboardCheck, Bike, Wallet,
-  BarChart3, ScrollText, Settings, LogOut, Menu,
+  BarChart3, ScrollText, Settings, LogOut, Menu, ShieldCheck,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useRoles, canAccess } from "@/hooks/use-roles";
+import { usePermissions, canAny } from "@/hooks/use-permissions";
 
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
@@ -20,22 +21,23 @@ export const Route = createFileRoute("/_authenticated")({
 });
 
 const NAV = [
-  { key: "dashboard",  to: "/dashboard",   label: "Dashboard",         icon: LayoutDashboard },
-  { key: "partners",   to: "/partners",    label: "Delivery Partners", icon: Users },
-  { key: "attendance", to: "/attendance",  label: "Attendance",        icon: ClipboardCheck },
-  { key: "deliveries", to: "/deliveries",  label: "Deliveries",        icon: Bike },
-  { key: "earnings",   to: "/earnings",    label: "Earnings",          icon: Wallet },
-  { key: "reports",    to: "/reports",     label: "Reports",           icon: BarChart3 },
-  { key: "audit-logs", to: "/audit-logs",  label: "Audit Logs",        icon: ScrollText },
-  { key: "settings",   to: "/settings",    label: "Settings",          icon: Settings },
+  { to: "/dashboard",  label: "Dashboard",         icon: LayoutDashboard, perms: ["dashboard.view"] },
+  { to: "/partners",   label: "Delivery Partners", icon: Users,           perms: ["partners.view"] },
+  { to: "/attendance", label: "Attendance",        icon: ClipboardCheck,  perms: ["attendance.view"] },
+  { to: "/deliveries", label: "Deliveries",        icon: Bike,            perms: ["deliveries.view"] },
+  { to: "/earnings",   label: "Earnings",          icon: Wallet,          perms: ["earnings.view"] },
+  { to: "/reports",    label: "Reports",           icon: BarChart3,       perms: ["reports.view"] },
+  { to: "/audit-logs", label: "Audit Logs",        icon: ScrollText,      perms: ["audit.view"] },
+  { to: "/settings",   label: "Settings",          icon: Settings,        perms: ["settings.view", "settings.manage"] },
 ] as const;
 
 function AuthedLayout() {
   const { user } = Route.useRouteContext();
   const navigate = useNavigate();
+  const qc = useQueryClient();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [open, setOpen] = useState(false);
-  const { data: roles = [], isLoading: rolesLoading } = useRoles();
+  const { data: perms, isLoading: permsLoading } = usePermissions();
 
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange((event) => {
@@ -45,12 +47,18 @@ function AuthedLayout() {
   }, [navigate]);
 
   const signOut = async () => {
+    await qc.cancelQueries();
+    qc.clear();
     await supabase.auth.signOut();
-    navigate({ to: "/auth" });
+    navigate({ to: "/auth", replace: true });
   };
 
-  const visibleNav = NAV.filter((n) => canAccess(roles, n.key));
-  const roleLabel = rolesLoading ? "loading…" : roles[0]?.replace("_", " ") ?? "no role";
+  const visibleNav = NAV.filter((n) => canAny(perms, [...n.perms]));
+  const roleLabel = permsLoading
+    ? "loading…"
+    : perms && perms.size > 0
+      ? `${perms.size} permissions`
+      : "no access";
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -70,14 +78,17 @@ function AuthedLayout() {
           </div>
         </div>
         <nav className="space-y-1 p-3">
-          {rolesLoading &&
+          {permsLoading &&
             Array.from({ length: 5 }).map((_, i) => (
               <div key={i} className="mx-1 my-1 h-9 animate-pulse rounded-lg bg-white/5" />
             ))}
-          {!rolesLoading && visibleNav.length === 0 && (
-            <p className="px-3 py-2 text-xs text-slate-400">No modules assigned to your role.</p>
+          {!permsLoading && visibleNav.length === 0 && (
+            <div className="px-3 py-4 text-xs text-slate-400">
+              <ShieldCheck className="mb-2 h-4 w-4 text-slate-500" />
+              No modules assigned. Contact your administrator.
+            </div>
           )}
-          {!rolesLoading && visibleNav.map(({ to, label, icon: Icon }) => {
+          {!permsLoading && visibleNav.map(({ to, label, icon: Icon }) => {
             const active = pathname === to;
             return (
               <Link
