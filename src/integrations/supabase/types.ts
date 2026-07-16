@@ -27,6 +27,7 @@ export type Database = {
           check_out_lat: number | null
           check_out_lng: number | null
           created_at: string
+          created_by: string | null
           device_id: string | null
           device_info: Json | null
           face_recognition_id: string | null
@@ -36,6 +37,7 @@ export type Database = {
           remarks: string | null
           status: Database["public"]["Enums"]["attendance_status"]
           updated_at: string
+          updated_by: string | null
         }
         Insert: {
           ai_confidence?: number | null
@@ -49,6 +51,7 @@ export type Database = {
           check_out_lat?: number | null
           check_out_lng?: number | null
           created_at?: string
+          created_by?: string | null
           device_id?: string | null
           device_info?: Json | null
           face_recognition_id?: string | null
@@ -58,6 +61,7 @@ export type Database = {
           remarks?: string | null
           status?: Database["public"]["Enums"]["attendance_status"]
           updated_at?: string
+          updated_by?: string | null
         }
         Update: {
           ai_confidence?: number | null
@@ -71,6 +75,7 @@ export type Database = {
           check_out_lat?: number | null
           check_out_lng?: number | null
           created_at?: string
+          created_by?: string | null
           device_id?: string | null
           device_info?: Json | null
           face_recognition_id?: string | null
@@ -80,6 +85,7 @@ export type Database = {
           remarks?: string | null
           status?: Database["public"]["Enums"]["attendance_status"]
           updated_at?: string
+          updated_by?: string | null
         }
         Relationships: [
           {
@@ -90,6 +96,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      audit_logs: {
+        Row: {
+          action: string
+          actor_email: string | null
+          actor_id: string | null
+          created_at: string
+          entity_id: string | null
+          entity_type: string | null
+          id: string
+          ip_address: string | null
+          metadata: Json | null
+          new_values: Json | null
+          old_values: Json | null
+          user_agent: string | null
+        }
+        Insert: {
+          action: string
+          actor_email?: string | null
+          actor_id?: string | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          ip_address?: string | null
+          metadata?: Json | null
+          new_values?: Json | null
+          old_values?: Json | null
+          user_agent?: string | null
+        }
+        Update: {
+          action?: string
+          actor_email?: string | null
+          actor_id?: string | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          ip_address?: string | null
+          metadata?: Json | null
+          new_values?: Json | null
+          old_values?: Json | null
+          user_agent?: string | null
+        }
+        Relationships: []
       }
       delivery_partners: {
         Row: {
@@ -105,6 +156,8 @@ export type Database = {
           created_at: string
           created_by: string | null
           date_of_birth: string | null
+          deleted_at: string | null
+          deleted_by: string | null
           device_id: string | null
           driving_license_expiry: string | null
           driving_license_number: string | null
@@ -132,6 +185,7 @@ export type Database = {
           state: string | null
           status: Database["public"]["Enums"]["partner_status"]
           updated_at: string
+          updated_by: string | null
           upi_id: string | null
           user_id: string | null
           vehicle_model: string | null
@@ -151,6 +205,8 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           date_of_birth?: string | null
+          deleted_at?: string | null
+          deleted_by?: string | null
           device_id?: string | null
           driving_license_expiry?: string | null
           driving_license_number?: string | null
@@ -178,6 +234,7 @@ export type Database = {
           state?: string | null
           status?: Database["public"]["Enums"]["partner_status"]
           updated_at?: string
+          updated_by?: string | null
           upi_id?: string | null
           user_id?: string | null
           vehicle_model?: string | null
@@ -197,6 +254,8 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           date_of_birth?: string | null
+          deleted_at?: string | null
+          deleted_by?: string | null
           device_id?: string | null
           driving_license_expiry?: string | null
           driving_license_number?: string | null
@@ -224,6 +283,7 @@ export type Database = {
           state?: string | null
           status?: Database["public"]["Enums"]["partner_status"]
           updated_at?: string
+          updated_by?: string | null
           upi_id?: string | null
           user_id?: string | null
           vehicle_model?: string | null
@@ -231,6 +291,128 @@ export type Database = {
           vehicle_type?: string | null
         }
         Relationships: []
+      }
+      permissions: {
+        Row: {
+          action: string
+          created_at: string
+          description: string | null
+          id: string
+          key: string
+          module: string
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          key: string
+          module: string
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          key?: string
+          module?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          branch: string | null
+          created_at: string
+          created_by: string | null
+          deleted_at: string | null
+          deleted_by: string | null
+          department: string | null
+          designation: string | null
+          email: string
+          employee_id: string | null
+          full_name: string
+          id: string
+          joining_date: string | null
+          notes: string | null
+          phone: string | null
+          photo_url: string | null
+          reporting_manager_id: string | null
+          status: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          branch?: string | null
+          created_at?: string
+          created_by?: string | null
+          deleted_at?: string | null
+          deleted_by?: string | null
+          department?: string | null
+          designation?: string | null
+          email: string
+          employee_id?: string | null
+          full_name: string
+          id: string
+          joining_date?: string | null
+          notes?: string | null
+          phone?: string | null
+          photo_url?: string | null
+          reporting_manager_id?: string | null
+          status?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          branch?: string | null
+          created_at?: string
+          created_by?: string | null
+          deleted_at?: string | null
+          deleted_by?: string | null
+          department?: string | null
+          designation?: string | null
+          email?: string
+          employee_id?: string | null
+          full_name?: string
+          id?: string
+          joining_date?: string | null
+          notes?: string | null
+          phone?: string | null
+          photo_url?: string | null
+          reporting_manager_id?: string | null
+          status?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
+      role_permissions: {
+        Row: {
+          created_at: string
+          id: string
+          permission_key: string
+          role: Database["public"]["Enums"]["app_role"]
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          permission_key: string
+          role: Database["public"]["Enums"]["app_role"]
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          permission_key?: string
+          role?: Database["public"]["Enums"]["app_role"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "role_permissions_permission_key_fkey"
+            columns: ["permission_key"]
+            isOneToOne: false
+            referencedRelation: "permissions"
+            referencedColumns: ["key"]
+          },
+        ]
       }
       user_roles: {
         Row: {
@@ -258,6 +440,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      has_permission: {
+        Args: { _permission_key: string; _user_id: string }
+        Returns: boolean
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -277,6 +463,12 @@ export type Database = {
         | "manager"
         | "dispatcher"
         | "team_leader"
+        | "branch_manager"
+        | "warehouse_manager"
+        | "inventory_manager"
+        | "customer_support"
+        | "delivery_manager"
+        | "auditor"
       attendance_status: "checked_in" | "checked_out" | "absent" | "on_leave"
       delivery_status:
         | "pending"
@@ -430,6 +622,12 @@ export const Constants = {
         "manager",
         "dispatcher",
         "team_leader",
+        "branch_manager",
+        "warehouse_manager",
+        "inventory_manager",
+        "customer_support",
+        "delivery_manager",
+        "auditor",
       ],
       attendance_status: ["checked_in", "checked_out", "absent", "on_leave"],
       delivery_status: [
