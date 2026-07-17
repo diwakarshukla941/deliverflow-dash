@@ -109,9 +109,21 @@ function UsersPage() {
     onError: (e: Error) => toast.error(e.message),
   });
 
+  type UpdatePayload = {
+    id: string;
+    full_name?: string | null;
+    phone?: string | null;
+    employee_id?: string | null;
+    department?: string | null;
+    designation?: string | null;
+    branch?: string | null;
+    joining_date?: string | null;
+    notes?: string | null;
+    status?: "active" | "suspended" | "disabled";
+    roles?: AppRole[];
+  };
   const update = useMutation({
-    mutationFn: (values: Partial<StaffRow> & { id: string; roles?: AppRole[] }) =>
-      updateFn({ data: values }),
+    mutationFn: (values: UpdatePayload) => updateFn({ data: values }),
     onSuccess: () => {
       toast.success("Staff user updated");
       setEditing(null);
