@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import {
   LayoutDashboard, Users, ClipboardCheck, Bike, Wallet,
-  BarChart3, ScrollText, Settings, LogOut, Menu, ShieldCheck,
+  BarChart3, ScrollText, Settings, LogOut, Menu, ShieldCheck, UserCog, KeyRound,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePermissions, canAny } from "@/hooks/use-permissions";
@@ -22,6 +22,8 @@ export const Route = createFileRoute("/_authenticated")({
 
 const NAV = [
   { to: "/dashboard",  label: "Dashboard",         icon: LayoutDashboard, perms: ["dashboard.view"] },
+  { to: "/users",      label: "Staff users",       icon: UserCog,         perms: ["users.view", "users.manage"] },
+  { to: "/roles",      label: "Roles & permissions", icon: KeyRound,      perms: ["roles.manage"] },
   { to: "/partners",   label: "Delivery Partners", icon: Users,           perms: ["partners.view"] },
   { to: "/attendance", label: "Attendance",        icon: ClipboardCheck,  perms: ["attendance.view"] },
   { to: "/deliveries", label: "Deliveries",        icon: Bike,            perms: ["deliveries.view"] },
