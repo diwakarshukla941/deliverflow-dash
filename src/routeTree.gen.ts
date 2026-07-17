@@ -12,7 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedUsersRouteImport } from './routes/_authenticated/users'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
+import { Route as AuthenticatedRolesRouteImport } from './routes/_authenticated/roles'
 import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticated/reports'
 import { Route as AuthenticatedPartnersRouteImport } from './routes/_authenticated/partners'
 import { Route as AuthenticatedEarningsRouteImport } from './routes/_authenticated/earnings'
@@ -42,9 +44,19 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedUsersRoute = AuthenticatedUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedRolesRoute = AuthenticatedRolesRouteImport.update({
+  id: '/roles',
+  path: '/roles',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedReportsRoute = AuthenticatedReportsRouteImport.update({
@@ -129,7 +141,9 @@ export interface FileRoutesByFullPath {
   '/earnings': typeof AuthenticatedEarningsRoute
   '/partners': typeof AuthenticatedPartnersRoute
   '/reports': typeof AuthenticatedReportsRoute
+  '/roles': typeof AuthenticatedRolesRoute
   '/settings': typeof AuthenticatedSettingsRoute
+  '/users': typeof AuthenticatedUsersRoute
   '/api/v1/me': typeof ApiV1MeRoute
   '/api/v1/attendance/check-in': typeof ApiV1AttendanceCheckInRoute
   '/api/v1/attendance/check-out': typeof ApiV1AttendanceCheckOutRoute
@@ -148,7 +162,9 @@ export interface FileRoutesByTo {
   '/earnings': typeof AuthenticatedEarningsRoute
   '/partners': typeof AuthenticatedPartnersRoute
   '/reports': typeof AuthenticatedReportsRoute
+  '/roles': typeof AuthenticatedRolesRoute
   '/settings': typeof AuthenticatedSettingsRoute
+  '/users': typeof AuthenticatedUsersRoute
   '/api/v1/me': typeof ApiV1MeRoute
   '/api/v1/attendance/check-in': typeof ApiV1AttendanceCheckInRoute
   '/api/v1/attendance/check-out': typeof ApiV1AttendanceCheckOutRoute
@@ -169,7 +185,9 @@ export interface FileRoutesById {
   '/_authenticated/earnings': typeof AuthenticatedEarningsRoute
   '/_authenticated/partners': typeof AuthenticatedPartnersRoute
   '/_authenticated/reports': typeof AuthenticatedReportsRoute
+  '/_authenticated/roles': typeof AuthenticatedRolesRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
+  '/_authenticated/users': typeof AuthenticatedUsersRoute
   '/api/v1/me': typeof ApiV1MeRoute
   '/api/v1/attendance/check-in': typeof ApiV1AttendanceCheckInRoute
   '/api/v1/attendance/check-out': typeof ApiV1AttendanceCheckOutRoute
@@ -190,7 +208,9 @@ export interface FileRouteTypes {
     | '/earnings'
     | '/partners'
     | '/reports'
+    | '/roles'
     | '/settings'
+    | '/users'
     | '/api/v1/me'
     | '/api/v1/attendance/check-in'
     | '/api/v1/attendance/check-out'
@@ -209,7 +229,9 @@ export interface FileRouteTypes {
     | '/earnings'
     | '/partners'
     | '/reports'
+    | '/roles'
     | '/settings'
+    | '/users'
     | '/api/v1/me'
     | '/api/v1/attendance/check-in'
     | '/api/v1/attendance/check-out'
@@ -229,7 +251,9 @@ export interface FileRouteTypes {
     | '/_authenticated/earnings'
     | '/_authenticated/partners'
     | '/_authenticated/reports'
+    | '/_authenticated/roles'
     | '/_authenticated/settings'
+    | '/_authenticated/users'
     | '/api/v1/me'
     | '/api/v1/attendance/check-in'
     | '/api/v1/attendance/check-out'
@@ -275,11 +299,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/users': {
+      id: '/_authenticated/users'
+      path: '/users'
+      fullPath: '/users'
+      preLoaderRoute: typeof AuthenticatedUsersRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/settings': {
       id: '/_authenticated/settings'
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof AuthenticatedSettingsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/roles': {
+      id: '/_authenticated/roles'
+      path: '/roles'
+      fullPath: '/roles'
+      preLoaderRoute: typeof AuthenticatedRolesRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/reports': {
@@ -391,7 +429,9 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedEarningsRoute: typeof AuthenticatedEarningsRoute
   AuthenticatedPartnersRoute: typeof AuthenticatedPartnersRoute
   AuthenticatedReportsRoute: typeof AuthenticatedReportsRoute
+  AuthenticatedRolesRoute: typeof AuthenticatedRolesRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
+  AuthenticatedUsersRoute: typeof AuthenticatedUsersRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -402,7 +442,9 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedEarningsRoute: AuthenticatedEarningsRoute,
   AuthenticatedPartnersRoute: AuthenticatedPartnersRoute,
   AuthenticatedReportsRoute: AuthenticatedReportsRoute,
+  AuthenticatedRolesRoute: AuthenticatedRolesRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
+  AuthenticatedUsersRoute: AuthenticatedUsersRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
