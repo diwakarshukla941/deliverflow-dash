@@ -142,7 +142,7 @@ export const updateStaffUser = createServerFn({ method: "POST" })
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
     const patch: Database["public"]["Tables"]["profiles"]["Update"] = { updated_by: userId };
-    if (data.full_name !== undefined) patch.full_name = data.full_name;
+    if (data.full_name !== undefined && data.full_name !== null) patch.full_name = data.full_name;
     if (data.phone !== undefined) patch.phone = data.phone ?? null;
     if (data.employee_id !== undefined) patch.employee_id = data.employee_id ?? null;
     if (data.department !== undefined) patch.department = data.department ?? null;
