@@ -151,9 +151,6 @@ function UsersPage() {
     onError: (e: Error) => toast.error(e.message),
   });
 
-  const toggleRole = (list: AppRole[], role: AppRole, on: boolean) =>
-    on ? Array.from(new Set([...list, role])) : list.filter((r) => r !== role);
-
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
