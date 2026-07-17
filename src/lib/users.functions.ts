@@ -123,14 +123,14 @@ export const updateStaffUser = createServerFn({ method: "POST" })
   .inputValidator(
     (data: {
       id: string;
-      full_name?: string;
-      phone?: string;
-      employee_id?: string;
-      department?: string;
-      designation?: string;
-      branch?: string;
-      joining_date?: string;
-      notes?: string;
+      full_name?: string | null;
+      phone?: string | null;
+      employee_id?: string | null;
+      department?: string | null;
+      designation?: string | null;
+      branch?: string | null;
+      joining_date?: string | null;
+      notes?: string | null;
       status?: "active" | "suspended" | "disabled";
       roles?: AppRole[];
     }) => data,
