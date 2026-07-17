@@ -3,30 +3,23 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { Database } from "@/integrations/supabase/types";
 
 type AppRole = Database["public"]["Enums"]["app_role"];
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type AnySupabase = any;
 
-async function assertCanManageUsers(supabase: Awaited<ReturnType<typeof requireSupabaseAuth>> extends never ? never : any, userId: string) {
+async function assertPermission(supabase: AnySupabase, userId: string, key: string) {
   const { data, error } = await supabase.rpc("has_permission", {
     _user_id: userId,
-    _permission_key: "users.manage",
+    _permission_key: key,
   });
   if (error) throw new Error(error.message);
-  if (!data) throw new Error("Forbidden: users.manage required");
-}
-
-async function assertCanViewUsers(supabase: any, userId: string) {
-  const { data, error } = await supabase.rpc("has_permission", {
-    _user_id: userId,
-    _permission_key: "users.view",
-  });
-  if (error) throw new Error(error.message);
-  if (!data) throw new Error("Forbidden: users.view required");
+  if (!data) throw new Error(`Forbidden: ${key} required`);
 }
 
 export const listStaffUsers = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     const { supabase, userId } = context;
-    await assertCanViewUsers(supabase, userId);
+    await assertPermission(supabase, userId, "users.view");
 
     const { data: profiles, error } = await supabase
       .from("profiles")
@@ -68,7 +61,7 @@ export const createStaffUser = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
-    await assertCanManageUsers(supabase, userId);
+    await assertPermission(supabase, userId, "users.manage");
 
     if (!data.email || !data.password || !data.full_name) {
       throw new Error("email, password, full_name are required");
@@ -144,17 +137,20 @@ export const updateStaffUser = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
-    await assertCanManageUsers(supabase, userId);
+    await assertPermission(supabase, userId, "users.manage");
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
-    const patch: Record<string, unknown> = { updated_by: userId };
-    for (const k of [
-      "full_name","phone","employee_id","department","designation",
-      "branch","joining_date","notes","status",
-    ] as const) {
-      if (data[k] !== undefined) patch[k] = data[k] ?? null;
-    }
+    const patch: Database["public"]["Tables"]["profiles"]["Update"] = { updated_by: userId };
+    if (data.full_name !== undefined) patch.full_name = data.full_name;
+    if (data.phone !== undefined) patch.phone = data.phone ?? null;
+    if (data.employee_id !== undefined) patch.employee_id = data.employee_id ?? null;
+    if (data.department !== undefined) patch.department = data.department ?? null;
+    if (data.designation !== undefined) patch.designation = data.designation ?? null;
+    if (data.branch !== undefined) patch.branch = data.branch ?? null;
+    if (data.joining_date !== undefined) patch.joining_date = data.joining_date ?? null;
+    if (data.notes !== undefined) patch.notes = data.notes ?? null;
+    if (data.status !== undefined) patch.status = data.status;
 
     const { error: upErr } = await supabaseAdmin
       .from("profiles")
@@ -183,7 +179,7 @@ export const updateStaffUser = createServerFn({ method: "POST" })
       action: "user.update",
       entity_type: "profiles",
       entity_id: data.id,
-      new_values: patch as Record<string, unknown>,
+      new_values: patch as Database["public"]["Tables"]["audit_logs"]["Insert"]["new_values"],
     });
 
     return { ok: true };
@@ -194,7 +190,7 @@ export const resetStaffPassword = createServerFn({ method: "POST" })
   .inputValidator((data: { id: string; password: string }) => data)
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
-    await assertCanManageUsers(supabase, userId);
+    await assertPermission(supabase, userId, "users.manage");
     if (data.password.length < 8) throw new Error("Password must be at least 8 characters");
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -215,7 +211,7 @@ export const deleteStaffUser = createServerFn({ method: "POST" })
   .inputValidator((data: { id: string }) => data)
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
-    await assertCanManageUsers(supabase, userId);
+    await assertPermission(supabase, userId, "users.manage");
     if (data.id === userId) throw new Error("You cannot delete your own account");
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
