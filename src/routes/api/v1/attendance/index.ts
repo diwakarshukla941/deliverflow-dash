@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { authenticate, json, preflight, parsePagination } from "@/lib/api.server";
+import { authenticate, json, preflight, parsePagination, dbError } from "@/lib/api.server";
 
 // GET /api/v1/attendance
 //   ?partner_id=... (staff only, filter)
@@ -39,7 +39,7 @@ export const Route = createFileRoute("/api/v1/attendance/")({
         if (dateTo) query = query.lte("attendance_date", dateTo);
 
         const { data, error, count } = await query;
-        if (error) return json({ error: "db_error", message: error.message }, 400);
+        if (error) return dbError("attendance.list", error);
         return json({ data: data ?? [], pagination: { page, limit, total: count ?? 0 } });
       },
     },

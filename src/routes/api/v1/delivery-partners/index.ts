@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
-import { authenticate, json, preflight, parsePagination } from "@/lib/api.server";
+import { authenticate, json, preflight, parsePagination, dbError, sanitizeSearch } from "@/lib/api.server";
 
 const CreatePartnerSchema = z.object({
   partner_code: z.string().min(1).max(64),
@@ -38,10 +38,15 @@ export const Route = createFileRoute("/api/v1/delivery-partners/")({
           .range(from, to);
 
         if (status) query = query.eq("status", status as never);
-        if (q) query = query.or(`full_name.ilike.%${q}%,phone.ilike.%${q}%,partner_code.ilike.%${q}%`);
+        const safeQ = q ? sanitizeSearch(q) : "";
+        if (safeQ) {
+          query = query.or(
+            `full_name.ilike.%${safeQ}%,phone.ilike.%${safeQ}%,partner_code.ilike.%${safeQ}%`,
+          );
+        }
 
         const { data, error, count } = await query;
-        if (error) return json({ error: "db_error", message: error.message }, 400);
+        if (error) return dbError("partners.list", error);
         return json({ data: data ?? [], pagination: { page, limit, total: count ?? 0 } });
       },
 
@@ -61,7 +66,7 @@ export const Route = createFileRoute("/api/v1/delivery-partners/")({
           .select("*")
           .single();
 
-        if (error) return json({ error: "db_error", message: error.message }, 400);
+        if (error) return dbError("partners.create", error);
         return json({ data }, 201);
       },
     },
