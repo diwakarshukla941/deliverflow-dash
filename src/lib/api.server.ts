@@ -21,6 +21,20 @@ export function preflight(): Response {
   return new Response(null, { status: 204, headers: CORS_HEADERS });
 }
 
+/**
+ * Log the real database error server-side and return a generic, safe payload.
+ * Never leak Postgres/PostgREST messages (schema, column and constraint names) to clients.
+ */
+export function dbError(scope: string, error: unknown, status = 400): Response {
+  console.error(`[api:${scope}]`, error);
+  return json({ error: "db_error", message: "Something went wrong, please try again." }, status);
+}
+
+/** Strip PostgREST filter-control characters from a free-text search term. */
+export function sanitizeSearch(term: string): string {
+  return term.replace(/[%,().*\\:"']/g, "").trim().slice(0, 100);
+}
+
 export type AuthedContext = {
   supabase: SupabaseClient<Database>;
   userId: string;
@@ -69,9 +83,19 @@ export async function requirePartner(ctx: AuthedContext) {
     .select("*")
     .eq("user_id", ctx.userId)
     .maybeSingle();
-  if (error) return json({ error: "db_error", message: error.message }, 500);
+  if (error) return dbError("requirePartner", error, 500);
   if (!data) return json({ error: "not_a_partner", message: "No delivery partner linked to this account" }, 403);
   return data;
+}
+
+/** True when the caller holds any internal staff role. */
+export async function isStaff(ctx: AuthedContext): Promise<boolean> {
+  const { data } = await ctx.supabase
+    .from("user_roles")
+    .select("role")
+    .eq("user_id", ctx.userId)
+    .limit(1);
+  return (data?.length ?? 0) > 0;
 }
 
 export function parsePagination(url: URL) {
