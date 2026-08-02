@@ -168,7 +168,8 @@ export const updateStaffUser = createServerFn({ method: "POST" })
       }
     }
 
-    if (data.status === "disabled") {
+    // "suspended" must actually block access, not just change a badge.
+    if (data.status === "disabled" || data.status === "suspended") {
       await supabaseAdmin.auth.admin.updateUserById(data.id, { ban_duration: "876000h" }).catch(() => {});
     } else if (data.status === "active") {
       await supabaseAdmin.auth.admin.updateUserById(data.id, { ban_duration: "none" }).catch(() => {});
