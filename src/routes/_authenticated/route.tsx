@@ -8,7 +8,7 @@ import {
   BarChart3, ScrollText, Settings, LogOut, Menu, ShieldCheck, UserCog, KeyRound,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { usePermissions, canAny } from "@/hooks/use-permissions";
+import { useMyAccess, canAny } from "@/hooks/use-permissions";
 
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
@@ -39,14 +39,22 @@ function AuthedLayout() {
   const qc = useQueryClient();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [open, setOpen] = useState(false);
-  const { data: perms, isLoading: permsLoading } = usePermissions();
+  const { data: access, isLoading: permsLoading, isError } = useMyAccess();
+  const perms = access?.permissions;
 
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange((event) => {
-      if (event === "SIGNED_OUT") navigate({ to: "/auth" });
+      if (event === "SIGNED_OUT") {
+        qc.clear();
+        navigate({ to: "/auth" });
+      } else if (event === "SIGNED_IN") {
+        // Never let a previous account's cached data/permissions leak
+        // into the newly signed-in account on the same device.
+        qc.clear();
+      }
     });
     return () => data.subscription.unsubscribe();
-  }, [navigate]);
+  }, [navigate, qc]);
 
   const signOut = async () => {
     await qc.cancelQueries();
@@ -56,11 +64,14 @@ function AuthedLayout() {
   };
 
   const visibleNav = NAV.filter((n) => canAny(perms, [...n.perms]));
+  const prettyRole = (r: string) => r.replace(/_/g, " ");
   const roleLabel = permsLoading
     ? "loading…"
-    : perms && perms.size > 0
-      ? `${perms.size} permissions`
-      : "no access";
+    : isError
+      ? "couldn't load access"
+      : access && access.roles.length > 0
+        ? access.roles.map(prettyRole).join(", ")
+        : "no role assigned";
 
   return (
     <div className="min-h-screen bg-slate-50">
