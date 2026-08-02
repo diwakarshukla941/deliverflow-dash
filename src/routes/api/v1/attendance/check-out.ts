@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
-import { authenticate, json, preflight, requirePartner } from "@/lib/api.server";
+import { authenticate, json, preflight, requirePartner, dbError } from "@/lib/api.server";
 
 const CheckOutSchema = z.object({
   check_out_image_url: z.string().url().optional().nullable(),
@@ -48,7 +48,7 @@ export const Route = createFileRoute("/api/v1/attendance/check-out")({
           .select("*")
           .single();
 
-        if (error) return json({ error: "db_error", message: error.message }, 400);
+        if (error) return dbError("attendance.check-out", error);
         return json({ data });
       },
     },

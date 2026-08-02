@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { authenticate, json, preflight, requirePartner } from "@/lib/api.server";
+import { authenticate, json, preflight, requirePartner, dbError } from "@/lib/api.server";
 
 // GET /api/v1/attendance/today — mobile app "am I checked in?" check
 export const Route = createFileRoute("/api/v1/attendance/today")({
@@ -16,7 +16,7 @@ export const Route = createFileRoute("/api/v1/attendance/today")({
         const { data, error } = await ctx.supabase
           .from("attendance").select("*")
           .eq("partner_id", partner.id).eq("attendance_date", today).maybeSingle();
-        if (error) return json({ error: "db_error", message: error.message }, 400);
+        if (error) return dbError("attendance.today", error);
         return json({ data: data ?? null });
       },
     },

@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
-import { authenticate, json, preflight, requirePartner } from "@/lib/api.server";
+import { authenticate, json, preflight, requirePartner, dbError } from "@/lib/api.server";
 
 const CheckInSchema = z.object({
   check_in_image_url: z.string().url().optional().nullable(),
@@ -61,7 +61,7 @@ export const Route = createFileRoute("/api/v1/attendance/check-in")({
           ? await ctx.supabase.from("attendance").update(payload).eq("id", existing.id).select("*").single()
           : await ctx.supabase.from("attendance").insert(payload).select("*").single();
 
-        if (error) return json({ error: "db_error", message: error.message }, 400);
+        if (error) return dbError("attendance.check-in", error);
         return json({ data }, 201);
       },
     },
