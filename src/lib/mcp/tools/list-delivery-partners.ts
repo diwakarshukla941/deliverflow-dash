@@ -10,7 +10,7 @@ export default defineTool({
   inputSchema: {
     search: z.string().optional().describe("Optional text to match against name, phone or partner code."),
     status: z
-      .enum(["pending", "active", "inactive", "suspended", "blacklisted", "archived"])
+      .enum(["pending", "active", "deactivated", "suspended", "blacklisted", "resigned"])
       .optional()
       .describe("Optional partner status filter."),
     limit: z.number().int().optional().describe("Max rows to return (default 20, max 100)."),
