@@ -1,0 +1,135 @@
+{
+  "version": 1,
+  "sdk_version": "0.26.1",
+  "path": "/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://mnjqzubeujzbuibikkar.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "tej-delivery",
+      "version": "0.1.0",
+      "title": "Tej Delivery"
+    },
+    "tools": [
+      {
+        "name": "fleet_summary",
+        "title": "Fleet summary",
+        "description": "Snapshot of the delivery fleet: total partners, active partners and how many checked in today.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_delivery_partners",
+        "title": "List delivery partners",
+        "description": "List delivery partners (delivery boys) visible to the signed-in user, with optional name/phone/code search and status filter.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "search": {
+              "type": "string",
+              "description": "Optional text to match against name, phone or partner code."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "pending",
+                "active",
+                "deactivated",
+                "suspended",
+                "blacklisted",
+                "resigned"
+              ],
+              "description": "Optional partner status filter."
+            },
+            "limit": {
+              "type": "integer",
+              "description": "Max rows to return (default 20, max 100)."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_delivery_partner",
+        "title": "Get delivery partner",
+        "description": "Fetch the full profile of one delivery partner by id or partner code.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Delivery partner UUID."
+            },
+            "partner_code": {
+              "type": "string",
+              "description": "Human-readable partner code, e.g. TEJ-001."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_attendance",
+        "title": "List attendance records",
+        "description": "List attendance check-in/check-out records visible to the signed-in user, optionally filtered by date range or partner.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "from_date": {
+              "type": "string",
+              "description": "Inclusive start date, YYYY-MM-DD."
+            },
+            "to_date": {
+              "type": "string",
+              "description": "Inclusive end date, YYYY-MM-DD."
+            },
+            "partner_id": {
+              "type": "string",
+              "description": "Filter to one delivery partner UUID."
+            },
+            "limit": {
+              "type": "integer",
+              "description": "Max rows to return (default 50, max 200)."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
