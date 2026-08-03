@@ -27,6 +27,7 @@ import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } fr
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as ApiV1MeRouteImport } from './routes/api/v1/me'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
+import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as ApiV1DeliveryPartnersIndexRouteImport } from './routes/api/v1/delivery-partners/index'
 import { Route as ApiV1AttendanceIndexRouteImport } from './routes/api/v1/attendance/index'
 import { Route as ApiV1DeliveryPartnersIdRouteImport } from './routes/api/v1/delivery-partners/$id'
@@ -126,6 +127,11 @@ const Char91DotmcpChar93InvokeToolToolRoute =
     path: '/.mcp/invoke-tool/$tool',
     getParentRoute: () => rootRouteImport,
   } as any)
+const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
+  id: '/.lovable/oauth/consent',
+  path: '/.lovable/oauth/consent',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiV1DeliveryPartnersIndexRoute =
   ApiV1DeliveryPartnersIndexRouteImport.update({
     id: '/api/v1/delivery-partners/',
@@ -174,6 +180,7 @@ export interface FileRoutesByFullPath {
   '/roles': typeof AuthenticatedRolesRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/users': typeof AuthenticatedUsersRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/api/v1/me': typeof ApiV1MeRoute
   '/api/v1/attendance/check-in': typeof ApiV1AttendanceCheckInRoute
@@ -199,6 +206,7 @@ export interface FileRoutesByTo {
   '/roles': typeof AuthenticatedRolesRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/users': typeof AuthenticatedUsersRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/api/v1/me': typeof ApiV1MeRoute
   '/api/v1/attendance/check-in': typeof ApiV1AttendanceCheckInRoute
@@ -226,6 +234,7 @@ export interface FileRoutesById {
   '/_authenticated/roles': typeof AuthenticatedRolesRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/users': typeof AuthenticatedUsersRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/api/v1/me': typeof ApiV1MeRoute
   '/api/v1/attendance/check-in': typeof ApiV1AttendanceCheckInRoute
@@ -253,6 +262,7 @@ export interface FileRouteTypes {
     | '/roles'
     | '/settings'
     | '/users'
+    | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/api/v1/me'
     | '/api/v1/attendance/check-in'
@@ -278,6 +288,7 @@ export interface FileRouteTypes {
     | '/roles'
     | '/settings'
     | '/users'
+    | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/api/v1/me'
     | '/api/v1/attendance/check-in'
@@ -304,6 +315,7 @@ export interface FileRouteTypes {
     | '/_authenticated/roles'
     | '/_authenticated/settings'
     | '/_authenticated/users'
+    | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/api/v1/me'
     | '/api/v1/attendance/check-in'
@@ -321,6 +333,7 @@ export interface RootRouteChildren {
   McpRoute: typeof McpRoute
   Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
   ApiV1MeRoute: typeof ApiV1MeRoute
   ApiV1AttendanceCheckInRoute: typeof ApiV1AttendanceCheckInRoute
@@ -459,6 +472,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/.lovable/oauth/consent': {
+      id: '/.lovable/oauth/consent'
+      path: '/.lovable/oauth/consent'
+      fullPath: '/.lovable/oauth/consent'
+      preLoaderRoute: typeof DotlovableOauthConsentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/v1/delivery-partners/': {
       id: '/api/v1/delivery-partners/'
       path: '/api/v1/delivery-partners'
@@ -541,6 +561,7 @@ const rootRouteChildren: RootRouteChildren = {
   Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
+  DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
   ApiV1MeRoute: ApiV1MeRoute,
   ApiV1AttendanceCheckInRoute: ApiV1AttendanceCheckInRoute,
